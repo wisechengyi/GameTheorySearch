@@ -2,7 +2,7 @@ package AST;
 
 public class Board {
 	
-	public static final int BOARDSIZE = 5;
+	public static final int BOARDSIZE = 3;
 	
 	public int[][] boardValues; 
 
