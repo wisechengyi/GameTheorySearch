@@ -5,14 +5,14 @@ import java.util.Set;
 
 public abstract class Node {
 	
-	public static final int MAXOP = 2;
-	public static final int MINOP = 1;
+	public static final int P1OP = 1;
+	public static final int P2OP = 2;
 	public static final int UNOP = 0;
 	
 	public static final Board board = new Board();
 	
 	
-	public Set<int[][]> results;
+	public Set<int[][]> results; //all the children configuration
 		
 	public int[][] currentOccupancy;
 
@@ -77,7 +77,7 @@ public abstract class Node {
 		{
 			for (int j=0;j<currentOccupancy.length;j++)			
 			{
-				if ( currentOccupancy[i][j]==MAXOP)
+				if ( currentOccupancy[i][j]==P1OP)
 				{
 					sum += board.boardValues[i][j];
 				}

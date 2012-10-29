@@ -1,5 +1,7 @@
 package AST;
 
+
+//Player 2: Nickname Min
 public class minNode extends Node {
 
 	public minNode() {
@@ -51,7 +53,7 @@ public class minNode extends Node {
 							result[k][l] = currentOccupancy[k][l];
 						}
 					}
-					result[i][j] = MINOP;
+					result[i][j] = P2OP;
 
 					// check if current i,j 's neighbor are max player
 					// if so, its a blitz
@@ -78,7 +80,7 @@ public class minNode extends Node {
 		
 		if (left>=0)
 		{
-			if (currentOccupancy[y][left]==MINOP)
+			if (currentOccupancy[y][left]==P2OP)
 			{
 				return true;
 			}
@@ -86,7 +88,7 @@ public class minNode extends Node {
 		
 		if (right<currentOccupancy.length)
 		{
-			if (currentOccupancy[y][right]==MINOP)
+			if (currentOccupancy[y][right]==P2OP)
 			{
 				return true;
 			}
@@ -94,7 +96,7 @@ public class minNode extends Node {
 		
 		if (up>=0)
 		{
-			if (currentOccupancy[up][x]==MINOP)
+			if (currentOccupancy[up][x]==P2OP)
 			{
 				return true;
 			}
@@ -102,7 +104,7 @@ public class minNode extends Node {
 		
 		if (down<currentOccupancy.length)
 		{
-			if (currentOccupancy[down][x]==MINOP)
+			if (currentOccupancy[down][x]==P2OP)
 			{
 				return true;
 			}
@@ -120,33 +122,33 @@ public class minNode extends Node {
 		
 		if (left>=0)
 		{
-			if (currentOccupancy[y][left]==MAXOP)
+			if (currentOccupancy[y][left]==P1OP)
 			{
-				currentOccupancy[y][left]=MINOP;
+				currentOccupancy[y][left]=P2OP;
 			}
 		}
 		
 		if (right<currentOccupancy.length)
 		{
-			if (currentOccupancy[y][right]==MAXOP)
+			if (currentOccupancy[y][right]==P1OP)
 			{
-				currentOccupancy[y][right]=MINOP;
+				currentOccupancy[y][right]=P2OP;
 			}
 		}
 		
 		if (up>=0)
 		{
-			if (currentOccupancy[up][x]==MAXOP)
+			if (currentOccupancy[up][x]==P1OP)
 			{
-				currentOccupancy[up][x]=MINOP;
+				currentOccupancy[up][x]=P2OP;
 			}
 		}
 		
 		if (down<currentOccupancy.length)
 		{
-			if (currentOccupancy[down][x]==MAXOP)
+			if (currentOccupancy[down][x]==P1OP)
 			{
-				currentOccupancy[down][x]=MINOP;
+				currentOccupancy[down][x]=P2OP;
 			}
 		}
 		

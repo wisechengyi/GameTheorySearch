@@ -3,6 +3,7 @@ package AST;
 import java.util.HashSet;
 import java.util.Set;
 
+// Player 1: Nickname Max
 public class maxNode extends Node {
 
 	public maxNode() {
@@ -60,7 +61,7 @@ public class maxNode extends Node {
 							result[k][l] = currentOccupancy[k][l];
 						}
 					}
-					result[i][j] = MAXOP;
+					result[i][j] = P1OP;
 
 					// check if current i,j 's neighbor are max player
 					// if so, its a blitz
@@ -94,7 +95,7 @@ public class maxNode extends Node {
 		
 		if (left>=0)
 		{
-			if (currentOccupancy[y][left]==MAXOP)
+			if (currentOccupancy[y][left]==P1OP)
 			{
 				return true;
 			}
@@ -102,7 +103,7 @@ public class maxNode extends Node {
 		
 		if (right<currentOccupancy.length)
 		{
-			if (currentOccupancy[y][right]==MAXOP)
+			if (currentOccupancy[y][right]==P1OP)
 			{
 				return true;
 			}
@@ -110,7 +111,7 @@ public class maxNode extends Node {
 		
 		if (up>=0)
 		{
-			if (currentOccupancy[up][x]==MAXOP)
+			if (currentOccupancy[up][x]==P1OP)
 			{
 				return true;
 			}
@@ -118,7 +119,7 @@ public class maxNode extends Node {
 		
 		if (down<currentOccupancy.length)
 		{
-			if (currentOccupancy[down][x]==MAXOP)
+			if (currentOccupancy[down][x]==P1OP)
 			{
 				return true;
 			}
@@ -138,33 +139,33 @@ public class maxNode extends Node {
 		
 		if (left>=0)
 		{
-			if (currentOccupancy[y][left]==MINOP)
+			if (currentOccupancy[y][left]==P2OP)
 			{
-				currentOccupancy[y][left]=MAXOP;
+				currentOccupancy[y][left]=P1OP;
 			}
 		}
 		
 		if (right<currentOccupancy.length)
 		{
-			if (currentOccupancy[y][right]==MINOP)
+			if (currentOccupancy[y][right]==P2OP)
 			{
-				currentOccupancy[y][right]=MAXOP;
+				currentOccupancy[y][right]=P1OP;
 			}
 		}
 		
 		if (up>=0)
 		{
-			if (currentOccupancy[up][x]==MINOP)
+			if (currentOccupancy[up][x]==P2OP)
 			{
-				currentOccupancy[up][x]=MAXOP;
+				currentOccupancy[up][x]=P1OP;
 			}
 		}
 		
 		if (down<currentOccupancy.length)
 		{
-			if (currentOccupancy[down][x]==MINOP)
+			if (currentOccupancy[down][x]==P2OP)
 			{
-				currentOccupancy[down][x]=MAXOP;
+				currentOccupancy[down][x]=P1OP;
 			}
 		}
 		
