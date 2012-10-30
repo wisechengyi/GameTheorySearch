@@ -9,7 +9,9 @@ public abstract class Node {
 	public static final int P2OP = 2;
 	public static final int UNOP = 0;
 	
-	public static final int DEPTHLIMIT = 4;
+	public static final int MIN_MAX_DEPTH_LIMIT = 4;
+	
+	public static final int ALPHA_BETA_DEPTH_LIMIT = 6;
 	
 	public static final Board board = new Board();
 	
@@ -25,9 +27,17 @@ public abstract class Node {
 	
 	public abstract boolean checkBlitz(int[][] op, int y, int x);
 	
-	public abstract void Blitz(int[][] op, int y, int x);
+	public abstract void blitz(int[][] op, int y, int x);
 	
-	public abstract int MinMax();
+	public abstract int minMax();
+	
+	public abstract int alphaBeta(int alpha, int beta);
+	
+	public int alphaBeta()
+	{
+//		return alphaBeta(0,board.getSum()-getUtility());
+		return alphaBeta(Integer.MIN_VALUE, Integer.MAX_VALUE);
+	}
 	
 	public abstract void generateResults(Set<int[][]> results);
 	
@@ -115,9 +125,18 @@ public abstract class Node {
 		
 	}
 	
-	public boolean isReachingDepthLimit()
+	public boolean isMinMaxReachingDepthLimit()
 	{
-		if (currDepth >= DEPTHLIMIT)
+		if (currDepth >= MIN_MAX_DEPTH_LIMIT)
+		{
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean isAlphaBetaReachingDepthLimit()
+	{
+		if (currDepth >= ALPHA_BETA_DEPTH_LIMIT)
 		{
 			return true;
 		}

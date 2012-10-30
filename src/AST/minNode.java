@@ -21,7 +21,7 @@ public class minNode extends Node {
 
 
 	@Override
-	public int MinMax() {
+	public int minMax() {
 
 		//determine if this is a terminal state
 		
@@ -31,7 +31,7 @@ public class minNode extends Node {
 					return getUtility();
 				}
 				
-				if (isReachingDepthLimit())
+				if (isMinMaxReachingDepthLimit())
 				{
 					return evaluationFunction();
 				}
@@ -50,7 +50,7 @@ public class minNode extends Node {
 					Node theMaxNode =  new maxNode(r,currDepth+1);
 					children.add(theMaxNode);
 					
-					int minMaxValue = theMaxNode.MinMax();
+					int minMaxValue = theMaxNode.minMax();
 					
 					if (minMaxValue < minValue) {
 						minValue = minMaxValue;
@@ -83,7 +83,7 @@ public class minNode extends Node {
 					// check if current i,j 's neighbor are min player
 					// if so, its a blitz
 					if (checkBlitz(result, i, j)) {
-						Blitz(result, i, j);
+						blitz(result, i, j);
 					}
 					// if not, its a drop
 						results.add(result);
@@ -136,7 +136,7 @@ public class minNode extends Node {
 	}
 
 	@Override
-	public void Blitz(int[][] op, int y, int x) {
+	public void blitz(int[][] op, int y, int x) {
 		int left = x - 1;
 		int up = y - 1;
 		int right = x+1;
@@ -174,6 +174,54 @@ public class minNode extends Node {
 			}
 		}
 		
+	}
+
+	@Override
+	public int alphaBeta(int alpha, int beta) {
+		
+		if (isTerminal())
+		{
+			//return utility value
+			return getUtility();
+		}
+		
+		if (isAlphaBetaReachingDepthLimit())
+		{
+			return evaluationFunction();
+		}
+		
+		//if not
+		//for each action, pass it to min max next level
+		
+		int minValue = Integer.MAX_VALUE;
+		
+		Set<int[][]> results= new HashSet<int[][]>();
+		generateResults(results);
+		
+		
+		for (int[][] r : results)
+		{
+			Node theMaxNode =  new maxNode(r,currDepth+1);
+			children.add(theMaxNode);
+			
+			int minMaxValue = theMaxNode.alphaBeta(alpha,beta);
+			
+			if (minMaxValue < minValue) {
+				minValue = minMaxValue;
+				choice = theMaxNode;
+			}
+			
+			if (minValue <= alpha)
+			{
+				return minValue;
+			}
+			
+			beta = Math.min(beta,minValue);
+		}
+		
+//		choice.markOnPath();
+		
+		return minValue;
 	}
 }
 

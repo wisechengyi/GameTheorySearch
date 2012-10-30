@@ -19,7 +19,7 @@ public class maxNode extends Node {
 	}
 	
 	@Override
-	public int MinMax()
+	public int minMax()
 	{
 		
 		
@@ -31,7 +31,7 @@ public class maxNode extends Node {
 			return getUtility();
 		}
 		
-		if (isReachingDepthLimit())
+		if (isMinMaxReachingDepthLimit())
 		{
 			return evaluationFunction();
 		}
@@ -52,7 +52,7 @@ public class maxNode extends Node {
 			Node theMinNode =  new minNode(r,currDepth+1); //create a child node
 			children.add(theMinNode);
 			
-			int minMaxValue = theMinNode.MinMax();
+			int minMaxValue = theMinNode.minMax();
 			
 			if (minMaxValue > maxValue) {
 				maxValue = minMaxValue;
@@ -87,7 +87,7 @@ public class maxNode extends Node {
 					// check if current i,j 's neighbor are max player
 					// if so, its a blitz
 					if (checkBlitz(result, i, j)) {
-						Blitz(result, i, j);
+						blitz(result, i, j);
 					}
 					results.add(result);
 				}
@@ -148,7 +148,7 @@ public class maxNode extends Node {
 
 
 	@Override
-	public void Blitz(int[][] op, int y, int x) {
+	public void blitz(int[][] op, int y, int x) {
 		int left = x - 1;
 		int up = y - 1;
 		int right = x+1;
@@ -186,5 +186,57 @@ public class maxNode extends Node {
 			}
 		}
 		
+	}
+
+	@Override
+	public int alphaBeta(int alpha, int beta) {
+		// TODO Auto-generated method stub
+	//determine if this is a terminal state
+		
+		if (isTerminal())
+		{
+			//return utility value
+			return getUtility();
+		}
+		
+		if (isAlphaBetaReachingDepthLimit())
+		{
+			return evaluationFunction();
+		}
+		
+		//if not 
+		//for each action, pass it to min max next level
+		
+		int maxValue = Integer.MIN_VALUE;
+		
+		
+		Set<int[][]> results= new HashSet<int[][]>();
+		generateResults(results);
+		
+		
+		
+		for (int[][] r : results)
+		{
+			Node theMinNode =  new minNode(r,currDepth+1); //create a child node
+			children.add(theMinNode);
+			
+			int minMaxValue = theMinNode.alphaBeta(alpha,beta);
+			
+			if (minMaxValue > maxValue) {
+				maxValue = minMaxValue;
+				choice = theMinNode;	
+			}
+			
+			if (maxValue >= beta) {
+				return maxValue;
+			}
+			
+			alpha = Math.max(alpha, maxValue);
+		
+		}
+		
+//		choice.markOnPath(); //set the max child to be onPath
+	
+		return maxValue;
 	}
 }

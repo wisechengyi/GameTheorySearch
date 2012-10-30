@@ -10,10 +10,10 @@ public class MinMaxTest {
 		
 		
 		Node maxPlayer = new maxNode();
-		maxPlayer.MinMax();
+		maxPlayer.minMax();
 		
 		Node minPlayer = new minNode(maxPlayer.choice.currentOccupancy);
-		minPlayer.MinMax();
+		minPlayer.minMax();
 		
 		maxPlayer.board.print();
 		
@@ -41,19 +41,22 @@ public class MinMaxTest {
 				minPlayer.choice.printOccupancy();
 				break;
 			}
-			System.out.println("-----------------------------");
+			
 
 			maxPlayer = new maxNode(minPlayer.choice.currentOccupancy);
-			maxPlayer.MinMax();
+			maxPlayer.minMax();
 			
 			minPlayer = new minNode(maxPlayer.choice.currentOccupancy);
-			minPlayer.MinMax();
+			minPlayer.minMax();
+			
 			
 		}
 		
 		System.out.format("maxPlayer util: %d\n",maxPlayer.getUtility());
 		
 		System.out.format("minPlayer util: %d\n",maxPlayer.board.getSum()-maxPlayer.getUtility());
+	
+		System.out.println("-----------------------------");
 	}
 	
 //	@Test
