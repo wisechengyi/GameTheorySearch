@@ -1,5 +1,8 @@
 package AST;
 
+import java.util.HashSet;
+import java.util.Set;
+
 
 //Player 2: Nickname Min
 public class minNode extends Node {
@@ -8,9 +11,14 @@ public class minNode extends Node {
 		super();
 	}
 
-	public minNode(int[][] op) {
-		super(op);
+	public minNode(int[][] op, int newDepth) {
+		super(op, newDepth);
 	}
+	
+	public minNode(int[][] op) {
+		super(op, 0);
+	}
+
 
 	@Override
 	public int MinMax() {
@@ -23,24 +31,40 @@ public class minNode extends Node {
 					return getUtility();
 				}
 				
+				if (isReachingDepthLimit())
+				{
+					return evaluationFunction();
+				}
 				
 				//if not
 				//for each action, pass it to min max next level
 				
-				int v = Integer.MAX_VALUE;
-				generateResults();
+				int minValue = Integer.MAX_VALUE;
+				
+				Set<int[][]> results= new HashSet<int[][]>();
+				generateResults(results);
+				
 				
 				for (int[][] r : results)
 				{
-					Node theMaxNode =  new maxNode(r);
-					v = Math.min(v,theMaxNode.MinMax());
+					Node theMaxNode =  new maxNode(r,currDepth+1);
+					children.add(theMaxNode);
+					
+					int minMaxValue = theMaxNode.MinMax();
+					
+					if (minMaxValue < minValue) {
+						minValue = minMaxValue;
+						choice = theMaxNode;
+					}
 				}
 				
-				return v;
+				choice.markOnPath();
+				
+				return minValue;
 	}
 
 	@Override
-	public void generateResults() {
+	public void generateResults(Set<int[][]> results) {
 		
 		for (int i = 0; i < currentOccupancy.length; i++) {
 			for (int j = 0; j < currentOccupancy.length; j++) {
@@ -53,25 +77,23 @@ public class minNode extends Node {
 							result[k][l] = currentOccupancy[k][l];
 						}
 					}
+					
 					result[i][j] = P2OP;
 
-					// check if current i,j 's neighbor are max player
+					// check if current i,j 's neighbor are min player
 					// if so, its a blitz
-					if (checkBlitz(i, j)) {
+					if (checkBlitz(result, i, j)) {
 						Blitz(result, i, j);
-						results.add(result);
 					}
 					// if not, its a drop
-					else {
 						results.add(result);
-					}
 				}
 			}
 		}
 	}
 
 	@Override
-	public boolean checkBlitz(int y, int x) {
+	public boolean checkBlitz(int[][] op, int y, int x) {
 		
 		int left = x - 1;
 		int up = y - 1;
@@ -80,15 +102,15 @@ public class minNode extends Node {
 		
 		if (left>=0)
 		{
-			if (currentOccupancy[y][left]==P2OP)
+			if (op[y][left]==P2OP)
 			{
 				return true;
 			}
 		}
 		
-		if (right<currentOccupancy.length)
+		if (right<op.length)
 		{
-			if (currentOccupancy[y][right]==P2OP)
+			if (op[y][right]==P2OP)
 			{
 				return true;
 			}
@@ -96,15 +118,15 @@ public class minNode extends Node {
 		
 		if (up>=0)
 		{
-			if (currentOccupancy[up][x]==P2OP)
+			if (op[up][x]==P2OP)
 			{
 				return true;
 			}
 		}
 		
-		if (down<currentOccupancy.length)
+		if (down<op.length)
 		{
-			if (currentOccupancy[down][x]==P2OP)
+			if (op[down][x]==P2OP)
 			{
 				return true;
 			}
@@ -122,33 +144,33 @@ public class minNode extends Node {
 		
 		if (left>=0)
 		{
-			if (currentOccupancy[y][left]==P1OP)
+			if (op[y][left]==P1OP)
 			{
-				currentOccupancy[y][left]=P2OP;
+				op[y][left]=P2OP;
 			}
 		}
 		
-		if (right<currentOccupancy.length)
+		if (right<op.length)
 		{
-			if (currentOccupancy[y][right]==P1OP)
+			if (op[y][right]==P1OP)
 			{
-				currentOccupancy[y][right]=P2OP;
+				op[y][right]=P2OP;
 			}
 		}
 		
 		if (up>=0)
 		{
-			if (currentOccupancy[up][x]==P1OP)
+			if (op[up][x]==P1OP)
 			{
-				currentOccupancy[up][x]=P2OP;
+				op[up][x]=P2OP;
 			}
 		}
 		
-		if (down<currentOccupancy.length)
+		if (down<op.length)
 		{
-			if (currentOccupancy[down][x]==P1OP)
+			if (op[down][x]==P1OP)
 			{
-				currentOccupancy[down][x]=P2OP;
+				op[down][x]=P2OP;
 			}
 		}
 		

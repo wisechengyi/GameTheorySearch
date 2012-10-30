@@ -10,11 +10,13 @@ public class maxNode extends Node {
 		super();
 	}
 	
-	public maxNode(int[][] op) {
-		super(op);
+	public maxNode(int[][] op, int newDepth) {
+		super(op, newDepth);
 	}
 
-	
+	public maxNode(int[][] op) {
+		super(op, 0);
+	}
 	
 	@Override
 	public int MinMax()
@@ -29,26 +31,45 @@ public class maxNode extends Node {
 			return getUtility();
 		}
 		
+		if (isReachingDepthLimit())
+		{
+			return evaluationFunction();
+		}
 		
-		//if not
+		//if not 
 		//for each action, pass it to min max next level
 		
-		int v = Integer.MIN_VALUE;
-		generateResults();
+		int maxValue = Integer.MIN_VALUE;
+		
+		
+		Set<int[][]> results= new HashSet<int[][]>();
+		generateResults(results);
+		
+		
 		
 		for (int[][] r : results)
 		{
-			Node theMinNode =  new minNode(r);
-			v = Math.max(v,theMinNode.MinMax());
+			Node theMinNode =  new minNode(r,currDepth+1); //create a child node
+			children.add(theMinNode);
+			
+			int minMaxValue = theMinNode.MinMax();
+			
+			if (minMaxValue > maxValue) {
+				maxValue = minMaxValue;
+				choice = theMinNode;
+			}
+		
 		}
 		
-		return v;
+		choice.markOnPath(); //set the max child to be onPath
+	
+		return maxValue;
 	}
 				
 
 
 	@Override
-	public void generateResults() {
+	public void generateResults(Set<int[][]> results) {
 		
 		for (int i = 0; i < currentOccupancy.length; i++) {
 			for (int j = 0; j < currentOccupancy.length; j++) {
@@ -65,14 +86,10 @@ public class maxNode extends Node {
 
 					// check if current i,j 's neighbor are max player
 					// if so, its a blitz
-					if (checkBlitz(i, j)) {
+					if (checkBlitz(result, i, j)) {
 						Blitz(result, i, j);
-						results.add(result);
 					}
-					// if not, its a drop
-					else {
-						results.add(result);
-					}
+					results.add(result);
 				}
 			}
 		}
@@ -85,7 +102,7 @@ public class maxNode extends Node {
 
 
 	@Override
-	public boolean checkBlitz(int y, int x) {
+	public boolean checkBlitz(int[][] op, int y, int x) {
 		// TODO Auto-generated method stub
 		
 		int left = x - 1;
@@ -95,15 +112,15 @@ public class maxNode extends Node {
 		
 		if (left>=0)
 		{
-			if (currentOccupancy[y][left]==P1OP)
+			if (op[y][left]==P1OP)
 			{
 				return true;
 			}
 		}
 		
-		if (right<currentOccupancy.length)
+		if (right<op.length)
 		{
-			if (currentOccupancy[y][right]==P1OP)
+			if (op[y][right]==P1OP)
 			{
 				return true;
 			}
@@ -111,15 +128,15 @@ public class maxNode extends Node {
 		
 		if (up>=0)
 		{
-			if (currentOccupancy[up][x]==P1OP)
+			if (op[up][x]==P1OP)
 			{
 				return true;
 			}
 		}
 		
-		if (down<currentOccupancy.length)
+		if (down<op.length)
 		{
-			if (currentOccupancy[down][x]==P1OP)
+			if (op[down][x]==P1OP)
 			{
 				return true;
 			}
@@ -139,33 +156,33 @@ public class maxNode extends Node {
 		
 		if (left>=0)
 		{
-			if (currentOccupancy[y][left]==P2OP)
+			if (op[y][left]==P2OP)
 			{
-				currentOccupancy[y][left]=P1OP;
+				op[y][left]=P1OP;
 			}
 		}
 		
-		if (right<currentOccupancy.length)
+		if (right<op.length)
 		{
-			if (currentOccupancy[y][right]==P2OP)
+			if (op[y][right]==P2OP)
 			{
-				currentOccupancy[y][right]=P1OP;
+				op[y][right]=P1OP;
 			}
 		}
 		
 		if (up>=0)
 		{
-			if (currentOccupancy[up][x]==P2OP)
+			if (op[up][x]==P2OP)
 			{
-				currentOccupancy[up][x]=P1OP;
+				op[up][x]=P1OP;
 			}
 		}
 		
-		if (down<currentOccupancy.length)
+		if (down<op.length)
 		{
-			if (currentOccupancy[down][x]==P2OP)
+			if (op[down][x]==P2OP)
 			{
-				currentOccupancy[down][x]=P1OP;
+				op[down][x]=P1OP;
 			}
 		}
 		
