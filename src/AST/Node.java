@@ -9,9 +9,11 @@ public abstract class Node {
 	public static final int P2OP = 2;
 	public static final int UNOP = 0;
 	
-	public static final int MIN_MAX_DEPTH_LIMIT = 4;
+	public static final int MIN_MAX_DEPTH_LIMIT = 3;
 	
-	public static final int ALPHA_BETA_DEPTH_LIMIT = 6;
+	public static final int ALPHA_BETA_DEPTH_LIMIT = 3;
+	
+	private static int nodeCount;
 	
 	public static final Board board = new Board();
 	
@@ -56,8 +58,6 @@ public abstract class Node {
 		children = new HashSet<Node>();
 		onPath = false;
 		currDepth = 0;
-		
-		
 	}
 	
 	public Node(int[][] occupancy, int newDepth) {
@@ -67,7 +67,23 @@ public abstract class Node {
 		currDepth=newDepth;
 	}
 	
-
+	public void incrementNodeCount()
+	{
+		nodeCount++;
+	}
+	public void resetNodeCount()
+	{
+		nodeCount=0;
+	}
+	public int getNodeCount()
+	{
+		return nodeCount;
+	}
+	
+	public Board getBoard()
+	{
+		return board;
+	}
 	
 	
 	public boolean isTerminal()

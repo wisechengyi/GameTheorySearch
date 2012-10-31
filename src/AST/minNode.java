@@ -22,6 +22,8 @@ public class minNode extends Node {
 
 	@Override
 	public int minMax() {
+		
+		incrementNodeCount();
 
 		//determine if this is a terminal state
 		
@@ -178,6 +180,8 @@ public class minNode extends Node {
 
 	@Override
 	public int alphaBeta(int alpha, int beta) {
+		
+		incrementNodeCount();
 		
 		if (isTerminal())
 		{
